@@ -30,6 +30,8 @@ window.addEventListener("load", setActiveLink);
 
 // Function to get all books from the API
 const loadBooks = async () => {
+  setupLoading(true);
+
   console.log("called");
   const response = await fetch("https://gutendex.com/books");
   try {
@@ -42,13 +44,27 @@ const loadBooks = async () => {
     if (currentPath === "/wishlist/") {
       displayBooks();
       setupPagination();
+      setupLoading(false);
     } else {
       extractGenres(books);
       displayBooks();
       setupPagination();
+      setupLoading(false);
     }
   } catch (error) {
+    console.log(error);
     alert(error.message);
+  }
+};
+
+const setupLoading = (value) => {
+  const loadingDiv = document.getElementById("loadingDiv");
+  const loader = document.createElement("div");
+  loader.innerHTML = `<div class="loader"></div>`;
+  if (value) {
+    loadingDiv.appendChild(loader);
+  } else {
+    loadingDiv.innerHTML = "";
   }
 };
 
@@ -79,105 +95,71 @@ function populateGenreDropdown() {
 function displayBooks() {
   const booksList = document.getElementById("books-list");
   booksList.innerHTML = ""; // Clear the current list
+  const filteredBooks = filterBooks();
+  const paginatedBooks = paginateBooks(filteredBooks);
+
+  paginatedBooks.forEach((book) => {
+    const bookDiv = document.createElement("div");
+
+    // Check if the book is in the wishlist
+    const isInWishlist = wishlist.includes(book.id);
+
+    bookDiv.innerHTML = `
+    <div key=${book.id} class="book-card">
+        <figure class="figure">
+            <img 
+            src="${book.formats["image/jpeg"]}" 
+            alt="${book.title}" 
+            class='book-image' 
+            />  
+            <i class="${
+              isInWishlist ? "fa-solid" : "fa-regular"
+            } fa-heart like-btn" data-id="${book.id}" 
+            style="color: ${isInWishlist ? "#ff0000" : "#000000"};"}>
+            </i>
+        </figure>
+            
+        <div class="book-details">
+            <h1 class='book-title'>${book.title}</h1>                   
+            <p>Author:${book?.authors[0]?.name}</p>                
+            <p>${
+              book.bookshelves
+                ? book.bookshelves[0].replace("Browsing: ", "")
+                : "Unknown genre"
+            }</p>
+        </div>
+    </div>`;
+
+    booksList.appendChild(bookDiv);
+  });
+}
+
+// Real-time search and genre filter
+function filterBooks() {
+  let filteredBooks = [];
+  console.log("called filterBooks()");
+  const searchTerm = document
+    .getElementById("search-bar")
+    ?.value?.toLowerCase();
+  const genreFilter = document.getElementById("genre-filter")?.value;
 
   const currentPath = window.location.pathname;
 
   if (currentPath === "/wishlist/") {
     const wishListBooks = books.filter((book) => wishlist.includes(book.id));
-    const paginatedBooks = paginateBooks(wishListBooks);
-    console.log({paginatedBooks})
-    paginatedBooks.forEach((book) => {
-      const bookDiv = document.createElement("div");
-
-      // Check if the book is in the wishlist
-      const isInWishlist = wishlist.includes(book.id);
-
-      bookDiv.innerHTML = `
-    <div key=${book.id} class="book-card">
-        <figure class="figure">
-            <img 
-            src="${book.formats["image/jpeg"]}" 
-            alt="${book.title}" 
-            class='book-image' 
-            />  
-            <i class="${
-              isInWishlist ? "fa-solid" : "fa-regular"
-            } fa-heart like-btn" data-id="${book.id}" 
-            style="color: ${isInWishlist ? "#ff0000" : "#000000"};"}>
-            </i>
-        </figure>
-            
-        <div class="book-details">
-            <h1 class='book-title'>${book.title}</h1>                   
-            <p>Author:${book?.authors[0]?.name}</p>                
-            <p>${
-              book.bookshelves
-                ? book.bookshelves[0].replace("Browsing: ", "")
-                : "Unknown genre"
-            }</p>
-        </div>
-    </div>`;
-
-      booksList.appendChild(bookDiv);
-    });
+    filteredBooks = wishListBooks;
   } else {
-    const filteredBooks = filterBooks();
-    const paginatedBooks = paginateBooks(filteredBooks);
-
-    paginatedBooks.forEach((book) => {
-      const bookDiv = document.createElement("div");
-
-      // Check if the book is in the wishlist
-      const isInWishlist = wishlist.includes(book.id);
-
-      bookDiv.innerHTML = `
-    <div key=${book.id} class="book-card">
-        <figure class="figure">
-            <img 
-            src="${book.formats["image/jpeg"]}" 
-            alt="${book.title}" 
-            class='book-image' 
-            />  
-            <i class="${
-              isInWishlist ? "fa-solid" : "fa-regular"
-            } fa-heart like-btn" data-id="${book.id}" 
-            style="color: ${isInWishlist ? "#ff0000" : "#000000"};"}>
-            </i>
-        </figure>
-            
-        <div class="book-details">
-            <h1 class='book-title'>${book.title}</h1>                   
-            <p>Author:${book?.authors[0]?.name}</p>                
-            <p>${
-              book.bookshelves
-                ? book.bookshelves[0].replace("Browsing: ", "")
-                : "Unknown genre"
-            }</p>
-        </div>
-    </div>`;
-
-      booksList.appendChild(bookDiv);
+    filteredBooks = books.filter((book) => {
+      const matchesSearch = book.title.toLowerCase().includes(searchTerm);
+      const matchesGenre =
+        genreFilter === "all" ||
+        (book.bookshelves &&
+          book.bookshelves.some((shelf) =>
+            shelf.toLowerCase().includes(genreFilter)
+          ));
+      return matchesSearch && matchesGenre;
     });
   }
-}
-
-// Real-time search and genre filter
-function filterBooks() {
-  console.log("called filterBooks()");
-  const searchTerm = document.getElementById("search-bar").value.toLowerCase();
-  const genreFilter = document.getElementById("genre-filter").value;
-
-  const filteredBooks = books.filter((book) => {
-    const matchesSearch = book.title.toLowerCase().includes(searchTerm);
-    const matchesGenre =
-      genreFilter === "all" ||
-      (book.bookshelves &&
-        book.bookshelves.some((shelf) =>
-          shelf.toLowerCase().includes(genreFilter)
-        ));
-    return matchesSearch && matchesGenre;
-  });
-
   return filteredBooks;
 }
 
@@ -209,23 +191,29 @@ function setupPagination() {
 
 // Handle events for real-time search, genre filter, and wishlist toggle
 function setupEventListeners() {
-  document.getElementById("search-bar").addEventListener("input", () => {
-    currentPage = 1; // Reset to first page on search
-    displayBooks();
-    setupPagination();
-  });
+  const currentPath = window.location.pathname;
 
-  document.getElementById("genre-filter").addEventListener("change", () => {
-    currentPage = 1; // Reset to first page on genre change
-    displayBooks();
-    setupPagination();
-  });
+  if (currentPath !== "/wishlist/") {
+    document.getElementById("search-bar").addEventListener("input", () => {
+      currentPage = 1; // Reset to first page on search
+      displayBooks();
+      setupPagination();
+    });
+
+    document.getElementById("genre-filter").addEventListener("change", () => {
+      currentPage = 1; // Reset to first page on genre change
+      displayBooks();
+      setupPagination();
+    });
+  }
 
   document.getElementById("books-list").addEventListener("click", (e) => {
     if (e.target.classList.contains("like-btn")) {
+      console.log("called");
       const bookId = Number(e.target.dataset.id);
       toggleWishlist(bookId);
       displayBooks();
+      setupPagination();
     }
   });
 }

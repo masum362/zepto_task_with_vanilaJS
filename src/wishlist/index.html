@@ -11,7 +11,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body onload="loadBooks()">
+<body onload="loadBooks(),setupEventListeners()">
   <header>
     <nav id="navbar">
       <h1>FindBooks</h1>
@@ -26,10 +26,14 @@
       <!-- Books will be rendered here -->
     </section>
 
-    <div id="pagination">
+    <section id="pagination">
       <!-- Pagination will be generated here -->
-    </div>
+    </section>
 
+    
+    <section id="loadingDiv">
+      <!-- loader will be generated here -->
+    </section>
   </main>
 
   <script type="module" src="../assets/js/main.js"></script>

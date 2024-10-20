@@ -6,10 +6,12 @@
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Index Page</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body onload="setupEventListeners(),loadBooks()">
+<body onload="loadBooks(),setupEventListeners()">
 
   <header>
     <nav id="navbar">
@@ -22,23 +24,26 @@
   </header>
   <a href=""></a>
 
-  <section id="filter-section">
-    <input type="text" id="search-bar" placeholder="Search books by title...">
-    <select id="genre-filter">
-      <option value="all">All Genres</option>
-    </select>
-  </section>
+  <main>
+    <section id="filter-section">
+      <input type="text" id="search-bar" placeholder="Search books by title...">
+      <select id="genre-filter">
+        <option value="all">All Genres</option>
+      </select>
+    </section>
 
-  <section id="books-list">
-    <!-- Books will be rendered here -->
-  </section>
+    <section id="books-list">
+      <!-- Books will be rendered here -->
+    </section>
 
-  <div id="pagination">
-    <!-- Pagination will be generated here -->
-  </div>
+    <section id="pagination">
+      <!-- Pagination will be generated here -->
+    </section>
 
-
-  <main>home content</main>
+    <section id="loadingDiv">
+      <!-- loader will be generated here -->
+    </section>
+  </main>
 
   <script type="module" src="./assets/js/main.js"></script>
 </body>
