@@ -2,6 +2,7 @@
 
 :root {
   --black-color: #031D44;
+  --choosen-color: aliceblue;
 
 }
 
@@ -73,19 +74,131 @@ header {
   width: 100%;
 }
 
-#menu .active{
+#menu .active {
   opacity: 1;
 }
+
+#filter-section {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  padding: 20px 50px;
+}
+
+#search-bar {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+  background-color: var(--choosen-color);
+}
+
+#search-bar:focus {
+  border: none;
+}
+
+#genre-filter {
+  padding: 5px;
+  cursor: pointer;
+}
+
+#books-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 20px;
+  padding: 20px 50px;
+}
+
+.book-card {
+  width: 24rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  flex-grow: 1;
+  padding: 1rem;
+  overflow: hidden;
+  position: relative;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px #ddd;
+  transition: 0.5s all ease-in-out;
+}
+
+.book-card:hover {
+  box-shadow: inset 10px 10px 10px #ddd;
+}
+
+.book-image {
+  object-fit: cover;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.like-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 36px;
+  cursor: pointer;
+}
+
+.book-details {
+  flex-grow: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.book-title {
+  font-size: 26px;
+}
+
+.book-details p {
+  font-size: 18px;
+}
+
+
+#pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.page-link {
+  margin: 0 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+}
+
+
 
 @media screen and (max-width: 768px) {
   #navbar {
     padding: 0px 10px;
   }
-  #navbar h1{
+
+  #navbar h1 {
     font-size: 20px;
   }
-  #menu .menu-item{
+
+  #menu .menu-item {
     font-size: 16px;
+  }
+
+  #filter-section {
+    flex-direction: column;
+  }
+
+  #books-list {
+    padding: 12px;
+    align-items: center;
+    justify-content: center;
   }
 
 }
