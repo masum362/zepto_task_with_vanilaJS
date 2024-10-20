@@ -1,14 +1,28 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WishList</title>
-  </head>
-  <body>
-    <h1>WishList page</h1>
-    <a href="/">Index page</a>
-    <script type="module" src="@js/wishlist.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WishList</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <header>
+    <nav id="navbar">
+      <h1>FindBooks</h1>
+      <ul id="menu">
+          <a href="/" class="menu-item active" data-name="home">Home</a>
+          <a  href="/wishlist/" class="menu-item" data-name="wishlist">Wishlist</a>
+      </ul>
+    </nav>
+  </header>
+  <main>wishlist content</main>
+
+  <script type="module" src="../assets/js/main.js"></script>
+  <script type="module" src="../assets/js/wishlist.js"></script>
+</body>
+
 </html>
