@@ -1,20 +1,15 @@
 import { sync } from "glob";
 import { resolve } from "path";
+import { defineConfig } from "vite";
 
-export default {
-  resolve: {
-    alias: {
-      "@": resolve(__dirname, "./src/*"),
-      "@js":resolve(__dirname,"./src/assets/js/*"),
-      "@css": resolve(__dirname, "./src/assets/css/*"),
-    },
-  },
+export default defineConfig({
   root: "./src",
   build: {
     outDir: "../dist",
-    emptyOutDir: true,
+    emptyOutDir:true,
     rollupOptions: {
-        input: sync("@/**/*.html".replace(/\\/g, "/")),
+      input:'./src/index.html',
+      wishlist:'./src/wishlist/wishlist.html',
     },
   },
-};
+});
